@@ -16,7 +16,7 @@ export default function Layout({ children }: LayoutProps) {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Container sx={{ flex: 1, py: 3 }}>{children}</Container>
+      <Container sx={{ flex: 1, py: 3, pb: 10 }}>{children}</Container>
       <Navigation />
     </Box>
   )
