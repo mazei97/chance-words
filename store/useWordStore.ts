@@ -119,6 +119,7 @@ interface WordStore {
   selectedGroup: string | null
   addWord: (english: string, korean: string, group?: string) => void
   addWords: (words: { english: string; korean: string }[], group?: string) => void
+  addOrUpdateWords: (words: { english: string; korean: string }[], group?: string) => void
   toggleMemorized: (id: string) => void
   deleteWord: (id: string) => void
   getRandomWord: (groupId?: string) => Word | null
@@ -158,6 +159,44 @@ export const useWordStore = create<WordStore>()(
           group: group || get().selectedGroup || get().groups[0]?.id || '1',
         }))
         set((state) => ({ words: [...state.words, ...words] }))
+      },
+
+      addOrUpdateWords: (newWords, group) => {
+        set((state) => {
+          const existingWords = [...state.words]
+          let addedCount = 0
+          let updatedCount = 0
+
+          newWords.forEach((newWord) => {
+            const existingIndex = existingWords.findIndex((w) => w.english.toLowerCase() === newWord.english.toLowerCase())
+
+            if (existingIndex >= 0) {
+              // 기존 단어 업데이트 (뜻만 변경, 암기 상태 유지)
+              existingWords[existingIndex] = {
+                ...existingWords[existingIndex],
+                korean: newWord.korean,
+                group: group || existingWords[existingIndex].group,
+              }
+              updatedCount++
+            } else {
+              // 새 단어 추가
+              existingWords.push({
+                id: Date.now().toString() + Math.random(),
+                english: newWord.english,
+                korean: newWord.korean,
+                memorized: false,
+                createdAt: Date.now(),
+                group: group || get().selectedGroup || get().groups[0]?.id || '1',
+              })
+              addedCount++
+            }
+          })
+
+          // 결과 알림을 위해 window 객체에 저장
+          ;(window as any).__wordUpdateResult = { addedCount, updatedCount }
+
+          return { words: existingWords }
+        })
       },
 
       toggleMemorized: (id) => {
