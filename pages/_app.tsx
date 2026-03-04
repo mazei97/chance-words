@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import Layout from '@/components/Layout'
+import { useEffect } from 'react'
 
 const theme = createTheme({
   palette: {
@@ -13,6 +14,14 @@ const theme = createTheme({
 })
 
 export default function App({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/chance-words/sw.js').catch((error) => {
+        console.log('Service Worker registration failed:', error)
+      })
+    }
+  }, [])
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
