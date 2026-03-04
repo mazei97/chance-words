@@ -12,7 +12,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: process.env.GITHUB_ACTIONS ? '/words' : '',
+  basePath: process.env.GITHUB_ACTIONS ? '/chance-words' : '',
 }
 
 module.exports = withPWA(nextConfig)

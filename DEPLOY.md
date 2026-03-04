@@ -26,13 +26,13 @@
 ## 배포 URL
 
 배포 후 다음 URL에서 접근 가능합니다:
-- `https://YOUR_USERNAME.github.io/words/`
+- `https://maze197.github.io/chance-words/`
 
 ## 저장소 이름 변경 시
 
 `next.config.js`에서 `basePath`를 수정하세요:
 ```js
-basePath: process.env.NODE_ENV === 'production' ? '/YOUR_REPO_NAME' : '',
+basePath: process.env.GITHUB_ACTIONS ? '/YOUR_REPO_NAME' : '',
 ```
 
 ## 로컬 빌드 테스트
