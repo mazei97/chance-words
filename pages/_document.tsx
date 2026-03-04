@@ -13,10 +13,10 @@ export default function Document() {
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#1976d2" />
 
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/icon-192x192.png" />
-        <link rel="icon" type="image/png" sizes="512x512" href="/icon-512x512.png" />
-        <link rel="apple-touch-icon" href="/icon-192x192.png" />
+        <link rel="manifest" href="/chance-words/manifest.json" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/chance-words/icon-192x192.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/chance-words/icon-512x512.png" />
+        <link rel="apple-touch-icon" href="/chance-words/icon-192x192.png" />
       </Head>
       <body>
         <Main />

@@ -2,20 +2,20 @@
   "name": "영어 단어장",
   "short_name": "단어장",
   "description": "영어 단어를 학습하고 테스트할 수 있는 앱",
-  "start_url": "/",
+  "start_url": "/chance-words/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1976d2",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/icon-192x192.png",
+      "src": "/chance-words/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-512x512.png",
+      "src": "/chance-words/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
