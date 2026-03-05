@@ -4,6 +4,7 @@ export default function Document() {
   return (
     <Html lang="ko">
       <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
         <meta name="application-name" content="영어 단어장" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -13,10 +14,10 @@ export default function Document() {
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#1976d2" />
 
-        <link rel="manifest" href="/chance-words/manifest.json" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/chance-words/icon-192x192.png" />
-        <link rel="icon" type="image/png" sizes="512x512" href="/chance-words/icon-512x512.png" />
-        <link rel="apple-touch-icon" href="/chance-words/icon-192x192.png" />
+        <link rel="manifest" href={process.env.NODE_ENV === 'production' ? '/chance-words/manifest.json' : '/manifest.json'} />
+        <link rel="icon" type="image/png" sizes="192x192" href={process.env.NODE_ENV === 'production' ? '/chance-words/icon-192x192.png' : '/icon-192x192.png'} />
+        <link rel="icon" type="image/png" sizes="512x512" href={process.env.NODE_ENV === 'production' ? '/chance-words/icon-512x512.png' : '/icon-512x512.png'} />
+        <link rel="apple-touch-icon" href={process.env.NODE_ENV === 'production' ? '/chance-words/icon-192x192.png' : '/icon-192x192.png'} />
       </Head>
       <body>
         <Main />

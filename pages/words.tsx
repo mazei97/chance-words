@@ -10,6 +10,8 @@ export default function Words() {
   const { words, groups, toggleMemorized, deleteWord, getWordsByGroup } = useWordStore()
   const router = useRouter()
   const [selectedGroup, setSelectedGroup] = useState<string>('all')
+  const [page, setPage] = useState(1)
+  const itemsPerPage = 50
 
   useEffect(() => {
     if (router.query.group) {
@@ -17,7 +19,13 @@ export default function Words() {
     }
   }, [router.query.group])
 
+  useEffect(() => {
+    setPage(1)
+  }, [selectedGroup])
+
   const displayWords = selectedGroup === 'all' ? words : getWordsByGroup(selectedGroup)
+  const totalPages = Math.ceil(displayWords.length / itemsPerPage)
+  const paginatedWords = displayWords.slice((page - 1) * itemsPerPage, page * itemsPerPage)
 
   if (words.length === 0) {
     return (
@@ -50,8 +58,24 @@ export default function Words() {
         </Select>
       </FormControl>
 
+      {totalPages > 1 && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, mb: 2 }}>
+          <Typography variant="body2" color="text.secondary">
+            {page} / {totalPages} 페이지
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <IconButton size="small" disabled={page === 1} onClick={() => setPage(page - 1)}>
+              ◀
+            </IconButton>
+            <IconButton size="small" disabled={page === totalPages} onClick={() => setPage(page + 1)}>
+              ▶
+            </IconButton>
+          </Box>
+        </Box>
+      )}
+
       <List>
-        {displayWords.map((word) => {
+        {paginatedWords.map((word) => {
           const group = groups.find((g) => g.id === word.group)
           return (
             <ListItem
@@ -96,6 +120,22 @@ export default function Words() {
           )
         })}
       </List>
+
+      {totalPages > 1 && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, mt: 2 }}>
+          <Typography variant="body2" color="text.secondary">
+            {page} / {totalPages} 페이지
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <IconButton size="small" disabled={page === 1} onClick={() => setPage(page - 1)}>
+              ◀
+            </IconButton>
+            <IconButton size="small" disabled={page === totalPages} onClick={() => setPage(page + 1)}>
+              ▶
+            </IconButton>
+          </Box>
+        </Box>
+      )}
     </Box>
   )
 }

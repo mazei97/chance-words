@@ -11,13 +11,28 @@ export default function Navigation() {
   const currentPath = router.pathname
 
   return (
-    <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+    <Paper
+      sx={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        pb: 'env(safe-area-inset-bottom)',
+      }}
+      elevation={3}
+    >
       <BottomNavigation
         value={currentPath}
         onChange={(_, newValue) => {
-          router.push(newValue)
+          router.replace(newValue)
         }}
         showLabels
+        sx={{
+          '& .MuiBottomNavigationAction-root': {
+            minWidth: 60,
+            maxWidth: 80,
+          },
+        }}
       >
         <BottomNavigationAction label="홈" value="/" icon={<HomeIcon />} />
         <BottomNavigationAction label="추가" value="/camera" icon={<CameraAltIcon />} />
