@@ -8,7 +8,53 @@ const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#1976d2',
+      main: '#FF7043',
+      contrastText: '#FFFFFF',
+    },
+    secondary: {
+      main: '#7E57C2',
+      contrastText: '#FFFFFF',
+    },
+    background: {
+      default: '#F5F7FA',
+      paper: '#FFFFFF',
+    },
+  },
+  shape: {
+    borderRadius: 16,
+  },
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+          borderRadius: 16,
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 12,
+          textTransform: 'none',
+          fontWeight: 600,
+          padding: '10px 24px',
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+        },
+      },
+    },
+    MuiListItem: {
+      styleOverrides: {
+        root: {
+          borderRadius: 12,
+        },
+      },
     },
   },
 })
