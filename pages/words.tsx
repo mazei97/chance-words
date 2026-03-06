@@ -3,6 +3,7 @@ import { Typography, List, ListItem, ListItemText, IconButton, Box, Chip, Select
 import DeleteIcon from '@mui/icons-material/Delete'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
+import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import { useWordStore } from '@/store/useWordStore'
 import { useRouter } from 'next/router'
 
@@ -12,6 +13,16 @@ export default function Words() {
   const [selectedGroup, setSelectedGroup] = useState<string>('all')
   const [page, setPage] = useState(1)
   const itemsPerPage = 50
+
+  const speakWord = (text: string) => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel()
+      const utterance = new SpeechSynthesisUtterance(text)
+      utterance.lang = 'en-US'
+      utterance.rate = 0.8
+      window.speechSynthesis.speak(utterance)
+    }
+  }
 
   useEffect(() => {
     if (router.query.group) {
@@ -89,6 +100,9 @@ export default function Words() {
               }}
               secondaryAction={
                 <Box>
+                  <IconButton edge="end" onClick={() => speakWord(word.english)} sx={{ mr: 1 }}>
+                    <VolumeUpIcon />
+                  </IconButton>
                   <IconButton edge="end" onClick={() => toggleMemorized(word.id)} sx={{ mr: 1 }}>
                     {word.memorized ? <CheckCircleIcon color="success" /> : <RadioButtonUncheckedIcon />}
                   </IconButton>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Typography, Button, Box, Card, CardContent, IconButton, Select, MenuItem, FormControl, InputLabel, Chip } from '@mui/material'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import { useWordStore } from '@/store/useWordStore'
 
 export default function Home() {
@@ -13,6 +14,16 @@ export default function Home() {
     const word = getRandomWord()
     setCurrentWord(word)
     setShowKorean(false)
+  }
+
+  const speakWord = (text: string) => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel()
+      const utterance = new SpeechSynthesisUtterance(text)
+      utterance.lang = 'en-US'
+      utterance.rate = 0.8
+      window.speechSynthesis.speak(utterance)
+    }
   }
 
   useEffect(() => {
@@ -56,8 +67,11 @@ export default function Home() {
         <CardContent sx={{ textAlign: 'center', py: 6 }}>
           {currentGroup && <Chip label={currentGroup.name} color="primary" sx={{ mb: 2 }} />}
 
-          <Typography variant="h3" component="div" gutterBottom>
+          <Typography variant="h3" component="div" gutterBottom sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
             {currentWord.english}
+            <IconButton onClick={() => speakWord(currentWord.english)} color="primary">
+              <VolumeUpIcon fontSize="large" />
+            </IconButton>
           </Typography>
 
           {showKorean && (
