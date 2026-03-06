@@ -12,7 +12,7 @@ export default function Document() {
         <meta name="description" content="영어 단어를 학습하고 테스트할 수 있는 앱" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="#1976d2" />
+        <meta name="theme-color" content="#FF7043" />
 
         <link rel="manifest" href={process.env.NODE_ENV === 'production' ? '/chance-words/manifest.json' : '/manifest.json'} />
         <link rel="icon" type="image/png" sizes="192x192" href={process.env.NODE_ENV === 'production' ? '/chance-words/icon-192x192.png' : '/icon-192x192.png'} />
