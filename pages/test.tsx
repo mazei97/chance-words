@@ -1,18 +1,20 @@
 import { useState, useEffect } from 'react'
-import { Typography, Button, Box, Card, CardContent, TextField, LinearProgress } from '@mui/material'
+import { Typography, Button, Box, Card, CardContent, TextField, LinearProgress, Chip, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 import { useWordStore } from '@/store/useWordStore'
 
 export default function Test() {
-  const { words } = useWordStore()
+  const { words, groups, totalScore, addScore, getWordsByGroup } = useWordStore()
   const [testWords, setTestWords] = useState<any[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [answer, setAnswer] = useState('')
   const [showResult, setShowResult] = useState(false)
   const [score, setScore] = useState(0)
   const [testStarted, setTestStarted] = useState(false)
+  const [selectedGroup, setSelectedGroup] = useState<string>('all')
 
   const startTest = () => {
-    const shuffled = [...words].sort(() => Math.random() - 0.5)
+    const targetWords = selectedGroup === 'all' ? words : getWordsByGroup(selectedGroup)
+    const shuffled = [...targetWords].sort(() => Math.random() - 0.5)
     setTestWords(shuffled)
     setCurrentIndex(0)
     setScore(0)
@@ -23,7 +25,10 @@ export default function Test() {
 
   const checkAnswer = () => {
     const currentWord = testWords[currentIndex]
-    const isCorrect = answer.trim().toLowerCase() === currentWord.korean.toLowerCase()
+    // 쉼표로 구분된 여러 뜻 중 하나라도 맞으면 정답 처리
+    const meanings = currentWord.korean.split(',').map((m: string) => m.trim().toLowerCase().replace(/\s/g, ''))
+    const userAnswer = answer.trim().toLowerCase().replace(/\s/g, '')
+    const isCorrect = meanings.some((meaning: string) => meaning === userAnswer)
 
     if (isCorrect) {
       setScore(score + 1)
@@ -41,6 +46,8 @@ export default function Test() {
   }
 
   const finishTest = () => {
+    // 테스트 완료 시 점수를 누적
+    addScore(score)
     setTestStarted(false)
   }
 
@@ -55,15 +62,33 @@ export default function Test() {
   }
 
   if (!testStarted) {
+    const targetWords = selectedGroup === 'all' ? words : getWordsByGroup(selectedGroup)
+    
     return (
       <Box sx={{ maxWidth: 600, mx: 'auto', textAlign: 'center', mt: 8 }}>
         <Typography variant="h4" gutterBottom>
           단어 테스트
         </Typography>
+        <Box sx={{ mb: 4 }}>
+          <Chip label={`누적 점수: ${totalScore}점`} color="primary" sx={{ fontSize: '1.1rem', py: 3, px: 2 }} />
+        </Box>
+
+        <FormControl fullWidth sx={{ mb: 3 }}>
+          <InputLabel>테스트할 그룹</InputLabel>
+          <Select value={selectedGroup} label="테스트할 그룹" onChange={(e) => setSelectedGroup(e.target.value)}>
+            <MenuItem value="all">전체</MenuItem>
+            {groups.map((group) => (
+              <MenuItem key={group.id} value={group.id}>
+                {group.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
         <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-          전체 {words.length}개의 단어를 테스트합니다
+          {selectedGroup === 'all' ? '전체' : groups.find((g) => g.id === selectedGroup)?.name} {targetWords.length}개의 단어를 테스트합니다
         </Typography>
-        <Button variant="contained" size="large" onClick={startTest}>
+        <Button variant="contained" size="large" onClick={startTest} disabled={targetWords.length === 0}>
           테스트 시작
         </Button>
       </Box>
@@ -105,12 +130,21 @@ export default function Test() {
 
           {showResult && (
             <Box sx={{ mb: 3 }}>
-              <Typography variant="h6" color={answer.trim().toLowerCase() === currentWord.korean.toLowerCase() ? 'success.main' : 'error.main'}>
-                {answer.trim().toLowerCase() === currentWord.korean.toLowerCase() ? '정답!' : '오답'}
-              </Typography>
-              <Typography variant="body1" sx={{ mt: 1 }}>
-                정답: {currentWord.korean}
-              </Typography>
+              {(() => {
+                const meanings = currentWord.korean.split(',').map((m: string) => m.trim().toLowerCase().replace(/\s/g, ''))
+                const userAnswer = answer.trim().toLowerCase().replace(/\s/g, '')
+                const isCorrect = meanings.some((meaning: string) => meaning === userAnswer)
+                return (
+                  <>
+                    <Typography variant="h6" color={isCorrect ? 'success.main' : 'error.main'}>
+                      {isCorrect ? '정답!' : '오답'}
+                    </Typography>
+                    <Typography variant="body1" sx={{ mt: 1 }}>
+                      정답: {currentWord.korean}
+                    </Typography>
+                  </>
+                )
+              })()}
             </Box>
           )}
 

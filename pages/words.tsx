@@ -6,6 +6,7 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import { useWordStore } from '@/store/useWordStore'
 import { useRouter } from 'next/router'
+import ConfirmDialog from '@/components/ConfirmDialog'
 
 export default function Words() {
   const { words, groups, toggleMemorized, deleteWord, getWordsByGroup } = useWordStore()
@@ -13,6 +14,8 @@ export default function Words() {
   const [selectedGroup, setSelectedGroup] = useState<string>('all')
   const [page, setPage] = useState(1)
   const itemsPerPage = 50
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [wordToDelete, setWordToDelete] = useState<string | null>(null)
 
   const speakWord = (text: string) => {
     if ('speechSynthesis' in window) {
@@ -22,6 +25,19 @@ export default function Words() {
       utterance.rate = 0.8
       window.speechSynthesis.speak(utterance)
     }
+  }
+
+  const handleDeleteClick = (wordId: string) => {
+    setWordToDelete(wordId)
+    setConfirmOpen(true)
+  }
+
+  const handleConfirmDelete = () => {
+    if (wordToDelete) {
+      deleteWord(wordToDelete)
+    }
+    setConfirmOpen(false)
+    setWordToDelete(null)
   }
 
   useEffect(() => {
@@ -104,16 +120,9 @@ export default function Words() {
                     <VolumeUpIcon />
                   </IconButton>
                   <IconButton edge="end" onClick={() => toggleMemorized(word.id)} sx={{ mr: 1 }}>
-                    {word.memorized ? <CheckCircleIcon color="success" /> : <RadioButtonUncheckedIcon />}
+                    {word.memorized ? <CheckCircleIcon color="primary" /> : <RadioButtonUncheckedIcon />}
                   </IconButton>
-                  <IconButton
-                    edge="end"
-                    onClick={() => {
-                      if (confirm('이 단어를 삭제하시겠습니까?')) {
-                        deleteWord(word.id)
-                      }
-                    }}
-                  >
+                  <IconButton edge="end" onClick={() => handleDeleteClick(word.id)}>
                     <DeleteIcon />
                   </IconButton>
                 </Box>
@@ -150,6 +159,17 @@ export default function Words() {
           </Box>
         </Box>
       )}
+      
+      <ConfirmDialog
+        open={confirmOpen}
+        title="단어 삭제"
+        message="이 단어를 삭제하시겠습니까?"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => {
+          setConfirmOpen(false)
+          setWordToDelete(null)
+        }}
+      />
     </Box>
   )
 }

@@ -5,6 +5,9 @@ import Layout from '@/components/Layout'
 import { useEffect } from 'react'
 
 const theme = createTheme({
+  typography: {
+    fontFamily: '"Roboto", "Noto Sans KR", sans-serif',
+  },
   palette: {
     mode: 'light',
     primary: {

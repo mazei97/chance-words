@@ -14,6 +14,10 @@ export default function Document() {
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#FF7043" />
 
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
         <link rel="manifest" href={process.env.NODE_ENV === 'production' ? '/chance-words/manifest.json' : '/manifest.json'} />
         <link rel="icon" type="image/png" sizes="192x192" href={process.env.NODE_ENV === 'production' ? '/chance-words/icon-192x192.png' : '/icon-192x192.png'} />
         <link rel="icon" type="image/png" sizes="512x512" href={process.env.NODE_ENV === 'production' ? '/chance-words/icon-512x512.png' : '/icon-512x512.png'} />

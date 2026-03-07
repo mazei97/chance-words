@@ -89,7 +89,7 @@ export default function Home() {
               <>
                 <Button
                   variant="contained"
-                  color="success"
+                  color="primary"
                   startIcon={<CheckCircleIcon />}
                   onClick={() => {
                     toggleMemorized(currentWord.id)

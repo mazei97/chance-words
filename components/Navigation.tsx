@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home'
-import CameraAltIcon from '@mui/icons-material/CameraAlt'
+import CreateIcon from '@mui/icons-material/Create'
 import ListIcon from '@mui/icons-material/List'
 import QuizIcon from '@mui/icons-material/Quiz'
 import FolderIcon from '@mui/icons-material/Folder'
@@ -35,7 +35,7 @@ export default function Navigation() {
         }}
       >
         <BottomNavigationAction label="홈" value="/" icon={<HomeIcon />} />
-        <BottomNavigationAction label="추가" value="/camera" icon={<CameraAltIcon />} />
+        <BottomNavigationAction label="추가" value="/add" icon={<CreateIcon />} />
         <BottomNavigationAction label="그룹" value="/groups" icon={<FolderIcon />} />
         <BottomNavigationAction label="단어장" value="/words" icon={<ListIcon />} />
         <BottomNavigationAction label="테스트" value="/test" icon={<QuizIcon />} />

@@ -60,6 +60,7 @@ interface WordStore {
   words: Word[]
   groups: WordGroup[]
   selectedGroup: string | null
+  totalScore: number
   addWord: (english: string, korean: string, group?: string) => void
   addWords: (words: { english: string; korean: string }[], group?: string) => void
   addOrUpdateWords: (words: { english: string; korean: string }[], group?: string) => void
@@ -71,6 +72,7 @@ interface WordStore {
   deleteGroup: (id: string) => void
   setSelectedGroup: (groupId: string | null) => void
   getWordsByGroup: (groupId: string) => Word[]
+  addScore: (score: number) => void
 }
 
 export const useWordStore = create<WordStore>()(
@@ -79,6 +81,7 @@ export const useWordStore = create<WordStore>()(
       words: initialWords,
       groups: initialGroups,
       selectedGroup: null,
+      totalScore: 0,
 
       addWord: (english, korean, group) => {
         const newWord: Word = {
@@ -191,6 +194,10 @@ export const useWordStore = create<WordStore>()(
 
       getWordsByGroup: (groupId) => {
         return get().words.filter((word) => word.group === groupId)
+      },
+
+      addScore: (score) => {
+        set((state) => ({ totalScore: state.totalScore + score }))
       },
     }),
     {
